@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Deine Kurse</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:commandButton id="logout" value="Logout" action="#{login.logout}"/>
+       
+            <p:commandButton id="generalCourses" value="Zu allen angebotenen Kursen" action="#{login.getAllCourses()}"/>
+            
+            <p:commandButton id="newCourse" value="Neuen Kurs anlegen" action="newCourse"/>
+            
+             <p:outputLabel style="color: red;"> You are in, Ms/Mr #{login.username}!!!</p:outputLabel>
+         </h:form> 
+        
+         <br /> <br /> <br /> <br />
+        <h:form>
+            <ui:repeat value="#{login.courseList.CLT}" var="course" >
+            <p:growl id="msgs" showDetail="true" />
+            
+            <p:fieldset legend="#{course.title}" toggleable="true" toggleSpeed="500">
+            <p:ajax event="toggle" listener="#{fieldsetView.handleToggle}" update="msgs" />
+            <h:panelGrid columns="2" cellpadding="5">
+            
+                <h:outputText value="#{course.description}"></h:outputText>
+             
+                   <p:commandButton action="#{login.getCourseDetails}" 
+                                    actionListener="#{login.getCurrentCourseId(course.coursePk)}" 
+                                    value="Bearbeiten" />
+                   <p:commandButton action="#{login.deleteCourse}" 
+                                    actionListener="#{login.getCurrentCourseId(course.coursePk)}" 
+                                    value="Löschen" ajax="false"/>
+            </h:panelGrid>
+            </p:fieldset>
+            </ui:repeat>
+        </h:form>
+    </h:body>
+</html>
